@@ -1,21 +1,19 @@
-{
-  pkgs ? <nixpkgs> { },
-}:
+{pkgs ? <nixpkgs> {}}:
 pkgs.mkShell {
-
   packages = with pkgs; [
     mariadb
     mongodb-7_0
     (pkgs.python312.withPackages (
-      python-pkgs: with python-pkgs; [
-        mysql-connector
-        pymongo
-        jupyter
-        jupyterlab-lsp
-        pip
-        numpy
-        pandas
-      ]
+      python-pkgs:
+        with python-pkgs; [
+          mysql-connector
+          pymongo
+          jupyter
+          jupyterlab-lsp
+          pip
+          numpy
+          pandas
+        ]
     ))
   ];
 
@@ -37,7 +35,7 @@ pkgs.mkShell {
 
     # Starts the daemon
     # - Don't load mariadb global defaults in /etc with `--no-defaults`
-    # - Disable networking with `--skip-networking` and only use the socket so 
+    # - Disable networking with `--skip-networking` and only use the socket so
     #   multiple instances can run at once
     mysqld --no-defaults --datadir="$MYSQL_DATADIR" --pid-file="$MYSQL_PID_FILE" \
       --socket="$MYSQL_UNIX_PORT" 2> "$MYSQL_HOME/mysql.log" &

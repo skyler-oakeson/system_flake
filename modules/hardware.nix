@@ -3,24 +3,31 @@
   lib,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.hardware.drivers;
 
   amd = {
-    boot.initrd.kernelModules = [ "amdgpu" ];
-    environment.systemPackages = with pkgs; [ lact ];
+    boot.kernelParams = [
+      "video=DP-1:3840x2160@60"
+      "video=DP-2:2560x1440@144"
+    ];
+
+    boot.initrd.kernelModules = ["amdgpu"];
+    environment.systemPackages = with pkgs; [lact];
 
     # Enable for wayland and xorg
-    services.xserver.videoDrivers = [ "amdgpu" ];
+    services.xserver = {
+      videoDrivers = ["amdgpu"];
+      enableTearFree = true;
+    };
 
     # For 32 bit applications
     hardware.graphics.enable32Bit = true;
 
     # Start the gpu management deamon
     systemd = {
-      packages = with pkgs; [ lact ];
-      services.lactd.wantedBy = [ "multi-user.target" ];
+      packages = with pkgs; [lact];
+      services.lactd.wantedBy = ["multi-user.target"];
     };
   };
 
@@ -29,7 +36,7 @@ let
       enable = true;
     };
 
-    services.xserver.videoDrivers = [ "nvidia" ];
+    services.xserver.videoDrivers = ["nvidia"];
 
     hardware.nvidia = {
       modesetting.enable = true;
@@ -41,10 +48,8 @@ let
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
-
   };
-in
-{
+in {
   options = {
     hardware.drivers = lib.mkOption {
       type = lib.types.enum [

@@ -1,0 +1,12 @@
+{
+  "plugins": {
+    "blink-ripgrep.nvim": [],
+    "blink.cmp": [],
+    "gitsigns.nvim": [],
+    "lazydev.nvim": [],
+    "mini.pick": [],
+    "neopywal.nvim": [],
+    "nvim-autopairs": [],
+    "nvim-lspconfig": []
+  }
+}

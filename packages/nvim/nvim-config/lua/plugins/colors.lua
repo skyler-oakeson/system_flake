@@ -1,0 +1,3 @@
+-- vim.pack.add({ "savq/melange-nvim" })
+-- vim.pack.add({ "xero/miasma.nvim" })
+-- vim.pack.add({ "skylarmb/torchlight.nvim" })

@@ -1,25 +1,34 @@
 {
-  config,
-  lib,
+  inputs,
   pkgs,
   ...
-}:
-
-{
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/hardware.nix
-    ../../modules/xmonad.nix
+    ../../modules/xmonad
+    ../../modules/apps.nix
+    ../../modules/games/steam.nix
   ];
+
+  nixpkgs.config.allowUnfree = true;
+
+  # Enable AMD GPU drivers.
+  hardware.drivers = "AMD";
+
+  nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+
+  # Enable Steam
+  games.steam.enable = true;
+
+  programs.nix-ld.dev.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "elm";
-
-  programs.nix-ld.dev.enable = true;
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
@@ -37,9 +46,6 @@
     font = "Lat2-Terminus16";
     useXkbConfig = true; # use xkb.options in tty.
   };
-
-  # Enable AMD GPU drivers.
-  hardware.drivers = "AMD";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -69,6 +75,7 @@
     vim
     wget
     curl
+    inputs.self.packages.${pkgs.system}.nvim
   ];
 
   programs.mtr.enable = true;
@@ -80,8 +87,8 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  networking.firewall.allowedTCPPorts = [ ];
-  networking.firewall.allowedUDPPorts = [ ];
+  networking.firewall.allowedTCPPorts = [];
+  networking.firewall.allowedUDPPorts = [];
   networking.firewall.enable = true;
 
   # Enable flakes

@@ -1,8 +1,18 @@
-{ inputs, ... }:
-{
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.nvim = import ./nvim.nix { inherit inputs pkgs; };
+{inputs, ...}: let
+  wrappers = inputs.wrappers;
+in {
+  perSystem = {
+    pkgs,
+    lib,
+    ...
+  }: {
+    packages.nvim = import ./nvim {
+      inherit
+        inputs
+        lib
+        pkgs
+        wrappers
+        ;
     };
+  };
 }
