@@ -1,9 +1,12 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   environment.systemPackages = with pkgs; [
     kitty
     dmenu
     xmobar
     xwallpaper
+    pavucontrol
+    lf
   ];
 
   services.picom.enable = true;

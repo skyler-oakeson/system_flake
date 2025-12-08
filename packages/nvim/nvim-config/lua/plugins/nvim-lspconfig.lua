@@ -22,7 +22,7 @@ vim.lsp.config("nixd", {
         expr = 'import (builtins.getFlake "/home/skyler/cde/nix/conf").inputs.nixpkgs { }'
       },
       formatting = {
-        command = { "alejandra" }
+        command = { "nixfmt" }
       },
       options = {
         nixos = {

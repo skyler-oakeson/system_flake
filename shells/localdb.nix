@@ -1,19 +1,20 @@
-{pkgs ? <nixpkgs> {}}:
+{
+  pkgs ? <nixpkgs> { },
+}:
 pkgs.mkShell {
   packages = with pkgs; [
     mariadb
     mongodb-7_0
     (pkgs.python312.withPackages (
-      python-pkgs:
-        with python-pkgs; [
-          mysql-connector
-          pymongo
-          jupyter
-          jupyterlab-lsp
-          pip
-          numpy
-          pandas
-        ]
+      python-pkgs: with python-pkgs; [
+        mysql-connector
+        pymongo
+        jupyter
+        jupyterlab-lsp
+        pip
+        numpy
+        pandas
+      ]
     ))
   ];
 

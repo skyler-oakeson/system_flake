@@ -3,7 +3,8 @@
   lib,
   config,
   ...
-}: {
+}:
+{
   options = {
     games = {
       steam.enable = lib.mkEnableOption "enable steam and system settings to run it.";
@@ -29,7 +30,7 @@
 
     programs.steam = {
       enable = true;
-      extraCompatPackages = [];
+      extraCompatPackages = [ ];
       localNetworkGameTransfers.openFirewall = true;
       dedicatedServer.openFirewall = true;
       remotePlay.openFirewall = true;
