@@ -6,8 +6,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     wrappers.url = "github:lassulus/wrappers";
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-
     # Allows for unpatched binary running i.e. pip installs
     nix-ld = {
       url = "github:Mic92/nix-ld";
@@ -24,7 +22,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -34,9 +31,9 @@
         "aarch64-linux"
       ];
       imports = [
-        ./shells
         ./hosts
         ./packages
+        ./devshells
       ];
     };
 }

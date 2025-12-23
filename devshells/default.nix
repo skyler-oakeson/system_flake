@@ -3,10 +3,11 @@
   perSystem =
     { ... }:
     {
-      _module.args.wrappers = inputs.wrappers;
       imports = [
-        ./nvim
-        ./kitty
+        ./nix.nix
+        # ./python.nix
+        ./rust.nix
+        ./xmonad.nix
       ];
     };
 }

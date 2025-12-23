@@ -17,6 +17,7 @@ vim.o.winborder = 'single'
 vim.o.swapfile = false;
 vim.cmd(":hi StatusLine guibg=NONE")
 vim.opt.laststatus = 3
+vim.cmd(":colorscheme melange")
 
 local augroup = vim.api.nvim_create_augroup("UserConfig", {})
 

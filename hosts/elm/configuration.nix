@@ -10,6 +10,7 @@
     ../../modules/hardware.nix
     ../../modules/xmonad
     ../../modules/apps.nix
+    ../../modules/direnv.nix
     ../../modules/games/steam.nix
   ];
 
@@ -17,6 +18,8 @@
 
   # Enable AMD GPU drivers.
   hardware.drivers = "AMD";
+
+  desktopEnvironment.xmonad.enable = true;
 
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
@@ -54,6 +57,12 @@
   services.pipewire = {
     enable = true;
     pulse.enable = true;
+  };
+
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

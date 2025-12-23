@@ -5,6 +5,18 @@
   ...
 }:
 let
+
+  # PLUGIN NOT IN NIXPKGS
+  # <PLUGIN NAME> = pkgs.vimUtils.buildVimPlugin {
+  #   name = "<PLUGIN NAME>";
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "<OWNER>";
+  #     repo = "<REPO NAME>";
+  #     rev = "<BRANCH | COMMIT | TAG>";
+  #     hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="; # nix will provide all
+  #   };
+  # };
+
   startPlugins = with pkgs.vimPlugins; [
     oil-nvim
     nvim-lspconfig
@@ -18,6 +30,7 @@ let
     nvim-treesitter.withAllGrammars
     nvim-treesitter-context
     melange-nvim
+    miasma-nvim
   ];
 
   foldPlugins = builtins.foldl' (
@@ -40,35 +53,23 @@ let
     ) startPluginsWithDeps}
   '';
 in
-wrappers.lib.wrapPackage rec {
-  inherit pkgs;
-  package = pkgs.neovim;
-  env = {
-    NVIM_APPNAME = name;
+{
+  packages.nvim = wrappers.lib.wrapPackage {
+    inherit pkgs;
+    package = pkgs.neovim-unwrapped;
+    env = {
+      NVIM_APPNAME = name;
+    };
+    flags = {
+      "-u" = builtins.toString ./nvim-config/init.lua;
+      "--cmd" = "set runtimepath^=${./nvim-config} | set packpath^=${packpath}";
+    };
+    runtimeInputs = with pkgs; [
+      git
+      fzf
+      ripgrep
+      nixfmt
+      nixd
+    ];
   };
-  flags = {
-    "-u" = builtins.toString ./nvim-config/init.lua;
-    "--cmd" = "set runtimepath^=${./nvim-config} | set packpath^=${packpath}";
-  };
-  runtimeInputs = with pkgs; [
-    nixfmt
-    basedpyright
-    bash-language-server
-    clang-tools
-    csharp-ls
-    jdt-language-server
-    git
-    lua-language-server
-    marksman
-    nixd
-    rustup
-    texlab
-    typescript-language-server
-    vscode-langservers-extracted
-    (haskellPackages.ghcWithPackages (
-      self: with self; [
-        haskell-language-server
-      ]
-    ))
-  ];
 }
